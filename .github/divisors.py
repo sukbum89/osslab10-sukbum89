@@ -16,3 +16,4 @@ if __name__ == "__main__":
     except (IndexError, ValueError):
         print("Usage: python divisors.py <integer>")
 
+
