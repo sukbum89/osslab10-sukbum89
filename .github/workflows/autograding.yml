@@ -17,6 +17,11 @@ jobs:
 
     - name: Run Tests
       run: python workflows/divisors.py 100
+- name: Change Directory
+  run: cd workflows
+
+- name: Run Tests
+  run: python divisors.py 100
 
 on:
   push:
