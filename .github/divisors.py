@@ -1,3 +1,5 @@
+python divisors.py 100
+
 def find_divisors(n):
     divisors = []
     for i in range(1, n + 1):
