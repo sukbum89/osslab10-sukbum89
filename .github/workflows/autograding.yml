@@ -1,4 +1,9 @@
 name: Autograding Tests
+runs:
+  using: "python"
+  steps:
+    - name: Run divisors
+      run: python divisors.py 100
 
 on:
   push:
