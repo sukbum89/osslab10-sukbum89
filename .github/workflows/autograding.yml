@@ -1,0 +1,48 @@
+name: Autograding Tests
+
+on:
+  push:
+    branches:
+      - main  # 'main' 브랜치에 푸시할 때마다 실행됩니다.
+  repository_dispatch:  # 수동 트리거를 위한 설정
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest  # GitHub Actions가 실행될 운영체제
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # 리포지토리의 코드를 가져옵니다.
+
+      - name: test0
+        id: test0
+        uses: classroom-resources/autograding-io-grader@v1  # 자동 채점 액션 사용
+        with:
+          test-name: test0
+          command: python divisors.py 100
+          expected-output: 1 2 4 5 10 20 25 50 100
+          comparison-method: contains
+          timeout: 10
+
+      - name: test1
+        id: test1
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: test1
+          command: python divisors.py 23
+          expected-output: 1 23
+          comparison-method: contains
+          timeout: 10
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST0_RESULTS: "${{steps.test0.outputs.result}}"
+          TEST1_RESULTS: "${{steps.test1.outputs.result}}"
+        with:
+          runners: test0,test1
