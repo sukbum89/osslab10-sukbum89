@@ -1,27 +1,4 @@
 name: Autograding Tests
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Run Tests
-      run: python workflows/divisors.py 100
-- name: Change Directory
-  run: cd workflows
-
-- name: Run Tests
-  run: python divisors.py 100
 
 on:
   push:
@@ -38,7 +15,7 @@ jobs:
     steps:
       # 1. 리포지토리 체크아웃
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       # 2. Python 환경 설정
       - name: Set up Python
@@ -60,7 +37,7 @@ jobs:
         uses: classroom-resources/autograding-io-grader@v1
         with:
           test-name: test0
-          command: python divisors.py 100
+          command: python .github/divisors.py 100
           expected-output: "1 2 4 5 10 20 25 50 100"
           comparison-method: contains
           timeout: 10
@@ -71,7 +48,7 @@ jobs:
         uses: classroom-resources/autograding-io-grader@v1
         with:
           test-name: test1
-          command: python divisors.py 23
+          command: python .github/divisors.py 23
           expected-output: "1 23"
           comparison-method: contains
           timeout: 10
