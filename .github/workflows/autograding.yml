@@ -3,10 +3,10 @@ name: Autograding Tests
 on:
   push:
     branches:
-      - main  # 'main' 브랜치에 푸시될 때 실행
+      - main
   pull_request:
     branches:
-      - main  # PR 생성 시 실행
+      - main
 
 jobs:
   run-autograding-tests:
@@ -21,39 +21,46 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.x"
 
-      # 3. divisors.py가 있는지 확인 (디버깅)
-      - name: Check current directory
+      # 3. 종속성 설치 (필요 시)
+      - name: Install dependencies
+        run: |
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          fi
+
+      # 4. 파일 경로 디버깅 (테스트 전에 확인)
+      - name: Check file paths
         run: |
           echo "Current working directory:"
           pwd
-          echo "Files in directory:"
-          ls -la
+          echo "Files in workflows directory:"
+          ls -la workflows
 
-      # 4. 테스트 실행 (Test 0)
+      # 5. 테스트 실행 (Test 0)
       - name: test0
         id: test0
         uses: classroom-resources/autograding-io-grader@v1
         with:
           test-name: test0
-          command: python .github/divisors.py 100
+          command: python workflows/divisors.py 100
           expected-output: "1 2 4 5 10 20 25 50 100"
           comparison-method: contains
           timeout: 10
 
-      # 5. 테스트 실행 (Test 1)
+      # 6. 테스트 실행 (Test 1)
       - name: test1
         id: test1
         uses: classroom-resources/autograding-io-grader@v1
         with:
           test-name: test1
-          command: python .github/divisors.py 23
+          command: python workflows/divisors.py 23
           expected-output: "1 23"
           comparison-method: contains
           timeout: 10
 
-      # 6. 결과 보고
+      # 7. 결과 보고
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
