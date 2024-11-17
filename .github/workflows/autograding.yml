@@ -30,13 +30,13 @@ jobs:
             pip install -r requirements.txt
           fi
 
-      # 4. 파일 경로 디버깅 (테스트 전에 확인)
+      # 4. 파일 경로 디버깅
       - name: Check file paths
         run: |
           echo "Current working directory:"
           pwd
-          echo "Files in workflows directory:"
-          ls -la workflows
+          echo "Files in .github/workflows directory:"
+          ls -la .github/workflows
 
       # 5. 테스트 실행 (Test 0)
       - name: test0
@@ -44,7 +44,7 @@ jobs:
         uses: classroom-resources/autograding-io-grader@v1
         with:
           test-name: test0
-          command: python workflows/divisors.py 100
+          command: python .github/workflows/divisors.py 100
           expected-output: "1 2 4 5 10 20 25 50 100"
           comparison-method: contains
           timeout: 10
@@ -55,7 +55,7 @@ jobs:
         uses: classroom-resources/autograding-io-grader@v1
         with:
           test-name: test1
-          command: python workflows/divisors.py 23
+          command: python .github/workflows/divisors.py 23
           expected-output: "1 23"
           comparison-method: contains
           timeout: 10
