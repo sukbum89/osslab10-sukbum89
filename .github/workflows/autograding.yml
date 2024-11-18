@@ -1,3 +1,5 @@
+command: python .github/workflows/divisors.py 100
+
 jobs:
   build:
     runs-on: ubuntu-latest
