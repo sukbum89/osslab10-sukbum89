@@ -1,38 +1,23 @@
-command: python .github/workflows/divisors.py 100
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. Repository Checkout
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Set up Python
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: 3.9
 
-      # 3. Install dependencies
-      - name: Install dependencies
-        run: |
-          if [ -f "requirements.txt" ]; then
-            pip install -r requirements.txt
-          fi
-
-      # 4. Check file paths
       - name: Check file paths
         run: |
           echo "Current working directory:"
           pwd
-          echo "Files in workflows directory:"
-          ls -la workflows || echo "Directory not found"
-          echo "Files in .github/workflows directory:"
-          ls -la .github/workflows || echo "Directory not found"
+          echo "Files in the repository:"
+          ls -R
 
-      # 5. Test 0
-      - name: test0
+      - name: Test 0
         id: test0
         uses: classroom-resources/autograding-io-grader@v1
         with:
@@ -42,8 +27,7 @@ jobs:
           comparison-method: contains
           timeout: 10
 
-      # 6. Test 1
-      - name: test1
+      - name: Test 1
         id: test1
         uses: classroom-resources/autograding-io-grader@v1
         with:
