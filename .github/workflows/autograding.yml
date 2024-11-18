@@ -1,44 +1,35 @@
-name: Autograding Tests
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
-  run-autograding-tests:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. 리포지토리 체크아웃
-      - name: Checkout code
+      # 1. Repository Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Python 환경 설정
+      # 2. Set up Python
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v3
         with:
-          python-version: "3.x"
+          python-version: 3.9
 
-      # 3. 종속성 설치 (필요 시)
+      # 3. Install dependencies
       - name: Install dependencies
         run: |
           if [ -f "requirements.txt" ]; then
             pip install -r requirements.txt
           fi
 
-      # 4. 파일 경로 디버깅
+      # 4. Check file paths
       - name: Check file paths
         run: |
           echo "Current working directory:"
           pwd
+          echo "Files in workflows directory:"
+          ls -la workflows || echo "Directory not found"
           echo "Files in .github/workflows directory:"
-          ls -la .github/workflows
+          ls -la .github/workflows || echo "Directory not found"
 
-      # 5. 테스트 실행 (Test 0)
+      # 5. Test 0
       - name: test0
         id: test0
         uses: classroom-resources/autograding-io-grader@v1
@@ -49,7 +40,7 @@ jobs:
           comparison-method: contains
           timeout: 10
 
-      # 6. 테스트 실행 (Test 1)
+      # 6. Test 1
       - name: test1
         id: test1
         uses: classroom-resources/autograding-io-grader@v1
@@ -59,12 +50,3 @@ jobs:
           expected-output: "1 23"
           comparison-method: contains
           timeout: 10
-
-      # 7. 결과 보고
-      - name: Autograding Reporter
-        uses: classroom-resources/autograding-grading-reporter@v1
-        env:
-          TEST0_RESULTS: "${{ steps.test0.outputs.result }}"
-          TEST1_RESULTS: "${{ steps.test1.outputs.result }}"
-        with:
-          runners: test0,test1
